@@ -1,15 +1,17 @@
 /**
- * Defines the actor style.
+ * Defines the actor style class.
  *
  * @file This file defines the ActorStyle class.
  * @author Ryan Lamb
  * @since 5/6/2018
  */
 
+import TextStyle from "./textStyle";
+
 /**
  * Class which contains style information for actors.
  */
-export default class ActorStyle {
+export default class ActorStyle implements TextStyle {
     /**
      * Construct an ActorStyle instance.
      * @param {string} color The color to use for the actor.

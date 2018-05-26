@@ -12,6 +12,8 @@ import StringMap from './stringMap';
 import Arrow from './arrow';
 import ArrowStyle from './arrowStyle';
 import DashStyle from './dashStyle';
+import NoteStyle from './noteStyle';
+import Note from './note';
 
 declare var SVG: any;
 
@@ -19,10 +21,9 @@ declare var SVG: any;
  * Class for creating and manipulating sequence diagrams.
  */
 export class Sequence {
-    private lockSequence: boolean = false;
+    private sequenceLocked: boolean = false;
     private readonly draw: any;
     private readonly actors: StringMap<Actor> = {};
-    //TODO: Should index by sequence.
     private readonly arrows: Arrow[] = [];
     private sequenceNumber = 0;
     private actorStyle: ActorStyle = new ActorStyle('#3e84ff',
@@ -30,12 +31,17 @@ export class Sequence {
         75,
         20);
 
+    private noteStyle: NoteStyle = new NoteStyle("#fff9e6", 10, 1, 12);
+
     private readonly arrowLineWidth = 2;
     private readonly arrowContinuousStyle = new ArrowStyle(this.arrowLineWidth,
         '#FFFFFF');
     private readonly arrowDashedStyle = new ArrowStyle(this.arrowLineWidth,
         '#FFFFFF',
         new DashStyle(5, 5));
+
+    private yLast: number = 100;
+    private readonly yDelta: number = 50;
 
     /**
      * Construct a new sequence diagram.
@@ -71,29 +77,47 @@ export class Sequence {
         const startX = startActor.centerX;
         const endX = endActor.centerX;
 
-        const y = (this.sequenceNumber * 50) + 150;
+        //const y = (this.sequenceNumber * 50) + 150;
+        const y = this.yLast + this.yDelta;
+
         let arrowStyle = dashed ? this.arrowDashedStyle : this.arrowContinuousStyle;
         const arrow = new Arrow(startX, y, endX, y, arrowStyle, this.draw, label);
         this.arrows.push(arrow);
-        if (!this.lockSequence) {
-            this.sequenceNumber++;
+        if (!this.sequenceLocked) {
+            this.yLast = y;
+            console.log("yLast" + this.yLast);
         }
     }
 
     /**
-     * Lock the current sequence number. Added arrows will be in the same sequence position.
+     * Add a new note to the diagram.
+     * @param {string} anchor The actor to anchor the note to.
+     * @param {string} text The text for the note.
      */
-    lockSequenceNumber() {
-        this.lockSequence = true;
+    addNote(anchor: string, text: string) {
+        const anchorActor = this.actors[anchor];
+        const y = this.yLast + this.yDelta;
+        const note = new Note(text, this.noteStyle, this.draw);
+        note.move(anchorActor.centerX, y);
+        if(!this.sequenceLocked) {
+            this.yLast = y + note.height;
+        }
     }
 
     /**
-     * Unlock the current sequence number and increment the sequence.
-     * The sequence number will resume incrementing with additions.
+     * Lock the current sequence position. Added arrows will be in the same sequence position.
      */
-    unlockSequenceNumber() {
-        if (this.lockSequence) {
-            this.lockSequence = false;
+    lockSequence() {
+        this.sequenceLocked = true;
+    }
+
+    /**
+     * Unlock the current sequence and increment the sequence.
+     * The sequence position will resume incrementing with additions.
+     */
+    unlockSequence() {
+        if (this.sequenceLocked) {
+            this.sequenceLocked = false;
             this.sequenceNumber++;
         }
     }

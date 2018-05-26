@@ -9,12 +9,15 @@ import {Sequence} from 'sequence'
 export function main() {
     const seq= new Sequence("diagram", 1000,1000);
     seq.addActor("First");
+    //seq.addNote("First", "This note will be off screen.");
     seq.addActor("Second");
     seq.addActor("Third");
-    //seq.lockSequenceNumber();
+    //seq.lockSequence();
     seq.addArrow("First", "Second", false,"DoStuffSend()");
     //seq.addArrow("Second", "Third", false,"DoStuffSend()");
-    //seq.unlockSequenceNumber();
+    //seq.unlockSequence();
     seq.addArrow("Second", "First", true,"DoStuffReply()");
     seq.addArrow("Third", "First", false,"LongWay");
+    seq.addNote("Second", "This is what a note looks like.\nThere can be multiple lines.");
+    seq.addArrow("First", "Third", true,"LongWayBack");
 }
