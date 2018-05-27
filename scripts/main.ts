@@ -20,4 +20,5 @@ export function main() {
     seq.addArrow("Third", "First", false,"LongWay");
     seq.addNote("Second", "This is what a note looks like.\nThere can be multiple lines.");
     seq.addArrow("First", "Third", true,"LongWayBack");
+    seq.addNote("Third", "Note on the other edge.");
 }

@@ -4,7 +4,7 @@
  * @since 5/25/2018
  */
 
-import NoteStyle from "./noteStyle";
+import NoteStyle from "../styles/noteStyle";
 
 /**
  * Class which represents a note in a sequence diagram.
@@ -37,7 +37,7 @@ export default class Note {
      * @param {number} x The new x position for the note.
      * @param {number} y The new y position for the note.
      */
-   move(x: number, y: number) {
+   protected move(x: number, y: number) {
        this.group.move(x, y);
    }
 }

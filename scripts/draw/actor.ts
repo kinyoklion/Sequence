@@ -5,7 +5,7 @@
  * @author Ryan Lamb
  * @since 5/6/2018
  */
-import ActorStyle from "./actorStyle";
+import ActorStyle from "../styles/actorStyle";
 
 /**
  * Class which represents an actor in a sequence diagram.

@@ -5,7 +5,7 @@
  * @author Ryan Lamb
  * @since 5/6/2018
  */
-import ArrowStyle from './arrowStyle';
+import ArrowStyle from '../styles/arrowStyle';
 
 /**
  * Class which represents an arrow on a sequence diagram.

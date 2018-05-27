@@ -6,14 +6,15 @@
  * @since 5/6/2018
  */
 
-import Actor from './actor'
-import ActorStyle from './actorStyle';
+import ActorStyle from './styles/actorStyle';
 import StringMap from './stringMap';
-import Arrow from './arrow';
-import ArrowStyle from './arrowStyle';
-import DashStyle from './dashStyle';
-import NoteStyle from './noteStyle';
-import Note from './note';
+import ArrowStyle from './styles/arrowStyle';
+import DashStyle from './styles/dashStyle';
+import NoteStyle from './styles/noteStyle';
+import SequenceElement from "./elements/sequenceElement";
+import ArrowElement from "./elements/arrowElement";
+import ActorElement from "./elements/actorElement";
+import NoteElement from "./elements/noteElement";
 
 declare var SVG: any;
 
@@ -23,8 +24,7 @@ declare var SVG: any;
 export class Sequence {
     private sequenceLocked: boolean = false;
     private readonly draw: any;
-    private readonly actors: StringMap<Actor> = {};
-    private readonly arrows: Arrow[] = [];
+    private readonly actors: StringMap<ActorElement> = {};
     private sequenceNumber = 0;
     private actorStyle: ActorStyle = new ActorStyle('#3e84ff',
         100,
@@ -39,6 +39,8 @@ export class Sequence {
     private readonly arrowDashedStyle = new ArrowStyle(this.arrowLineWidth,
         '#FFFFFF',
         new DashStyle(5, 5));
+
+    private readonly sequences: SequenceElement[] = [];
 
     private yLast: number = 100;
     private readonly yDelta: number = 50;
@@ -58,7 +60,7 @@ export class Sequence {
      * @param {string} name The name of the actor.
      */
     addActor(name: string) {
-        const actor = new Actor(name, this.actorStyle, this.draw);
+        const actor = new ActorElement(name, this.actorStyle, this.draw);
         const offset = Object.keys(this.actors).length * 200 + 10;
         actor.move(offset, 20);
         this.actors[name] = actor;
@@ -74,18 +76,15 @@ export class Sequence {
     addArrow(start: string, end: string, dashed: boolean, label?: string) {
         const startActor = this.actors[start];
         const endActor = this.actors[end];
-        const startX = startActor.centerX;
-        const endX = endActor.centerX;
 
-        //const y = (this.sequenceNumber * 50) + 150;
         const y = this.yLast + this.yDelta;
-
+        const sequence = new SequenceElement(y);
+        this.sequences.push(sequence);
         let arrowStyle = dashed ? this.arrowDashedStyle : this.arrowContinuousStyle;
-        const arrow = new Arrow(startX, y, endX, y, arrowStyle, this.draw, label);
-        this.arrows.push(arrow);
+        new ArrowElement(sequence, startActor, endActor, arrowStyle, this.draw, label);
+
         if (!this.sequenceLocked) {
             this.yLast = y;
-            console.log("yLast" + this.yLast);
         }
     }
 
@@ -97,8 +96,8 @@ export class Sequence {
     addNote(anchor: string, text: string) {
         const anchorActor = this.actors[anchor];
         const y = this.yLast + this.yDelta;
-        const note = new Note(text, this.noteStyle, this.draw);
-        note.move(anchorActor.centerX, y);
+        const sequence = new SequenceElement(y);
+        const note = new NoteElement(sequence, anchorActor, text, this.noteStyle, this.draw);
         if(!this.sequenceLocked) {
             this.yLast = y + note.height;
         }
