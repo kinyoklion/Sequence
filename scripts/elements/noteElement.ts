@@ -32,6 +32,8 @@ export default class NoteElement extends Note implements Element {
                 draw: any) {
         super(note, style, draw);
         this.move(anchorActor.centerX, sequence.getYPosition());
+        anchorActor.addElement(this);
+        this.sequence.addElement(this);
     }
 
     /**
@@ -41,4 +43,22 @@ export default class NoteElement extends Note implements Element {
         this.move(this.anchorActor.centerX, this.sequence.getYPosition());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    getRightX() {
+        // noinspection BadExpressionStatementJS
+        const bbox = this.group.rbox(this.draw);
+        console.log("getRightX Note: "+  (bbox.x));
+        return bbox.x + bbox.width;
+    }
+
+    /**
+     * Get the width of the note.
+     * @returns {number} The width of the note.
+     */
+    getWidth() {
+        const bbox = this.group.rbox(this.draw);
+        return bbox.width;
+    }
 }

@@ -25,13 +25,14 @@ export class Sequence {
     private sequenceLocked: boolean = false;
     private readonly draw: any;
     private readonly actors: StringMap<ActorElement> = {};
-    private sequenceNumber = 0;
     private actorStyle: ActorStyle = new ActorStyle('#3e84ff',
         100,
         75,
-        20);
+        20,
+        100);
 
     private noteStyle: NoteStyle = new NoteStyle("#fff9e6", 10, 1, 12);
+    private actorSequence: SequenceElement = new SequenceElement(20);
 
     private readonly arrowLineWidth = 2;
     private readonly arrowContinuousStyle = new ArrowStyle(this.arrowLineWidth,
@@ -60,9 +61,9 @@ export class Sequence {
      * @param {string} name The name of the actor.
      */
     addActor(name: string) {
-        const actor = new ActorElement(name, this.actorStyle, this.draw);
-        const offset = Object.keys(this.actors).length * 200 + 10;
-        actor.move(offset, 20);
+        const actor = new ActorElement(this.actorSequence, name, this.actorStyle, this.draw);
+        //const offset = Object.keys(this.actors).length * 200 + 10;
+        //actor.move(offset, 20);
         this.actors[name] = actor;
     }
 
@@ -98,6 +99,7 @@ export class Sequence {
         const y = this.yLast + this.yDelta;
         const sequence = new SequenceElement(y);
         const note = new NoteElement(sequence, anchorActor, text, this.noteStyle, this.draw);
+        this.sequences.push(sequence);
         if(!this.sequenceLocked) {
             this.yLast = y + note.height;
         }
@@ -117,7 +119,17 @@ export class Sequence {
     unlockSequence() {
         if (this.sequenceLocked) {
             this.sequenceLocked = false;
-            this.sequenceNumber++;
+        }
+    }
+
+    /**
+     * Re-flow the sequence diagram. Adjusts for any modifications that would change spacing of elements.
+     */
+    reflow() {
+        //the note can change the width of the actor.
+        this.actorSequence.reflow();
+        for(var item of this.sequences) {
+            item.reflow();
         }
     }
 }

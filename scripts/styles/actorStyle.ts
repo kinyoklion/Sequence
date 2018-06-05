@@ -18,10 +18,12 @@ export default class ActorStyle implements TextStyle {
      * @param {number} width The default width of the actor.
      * @param {number} height The default height of the actor.
      * @param {number} fontSize Font size to use for the actor label.
+     * @param {number} spacing The space to put between actors.
      */
     constructor(public color: string,
                 public width: number,
                 public height: number,
-                public fontSize: number) {
+                public fontSize: number,
+                public spacing: number) {
     }
 }

@@ -26,14 +26,15 @@ export default class ArrowElement extends Arrow implements Element {
      * @param draw The draw class used to render the arrow.
      * @param {string} label An optional label which will be attached to the arrow.
      */
-    constructor(sequence: SequenceElement,
-                startActor: ActorElement,
-                endActor: ActorElement,
+    constructor(protected sequence: SequenceElement,
+                protected startActor: ActorElement,
+                protected endActor: ActorElement,
                 style: ArrowStyle,
                 draw: any,
                 label?: string) {
+        super(style, draw, label);
         const y = sequence.getYPosition();
-        super(startActor.centerX, y, endActor.centerX, y, style, draw, label);
+        this.drawLine(startActor.centerX, y, endActor.centerX, y);
         sequence.addElement(this);
     }
 
@@ -41,8 +42,16 @@ export default class ArrowElement extends Arrow implements Element {
      * {@inheritDoc}
      */
     reflow() {
-        //TODO: Move or re-create the arrow.
+        const y = this.sequence.getYPosition();
+        this.drawLine(this.startActor.centerX, y, this.endActor.centerX, y);
     }
 
-    //constructor(startActor: )
+    /**
+     * {@inheritDoc}
+     */
+    getRightX() {
+        // noinspection BadExpressionStatementJS
+        const bbox = this.group.rbox(this.draw);
+        return bbox.x + bbox.width;
+    }
 }

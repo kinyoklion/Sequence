@@ -12,10 +12,10 @@ import NoteStyle from "../styles/noteStyle";
 export default class Note {
    private readonly rect: any;
    private readonly text: any;
-   private readonly group: any;
+   protected readonly group: any;
    readonly height: number;
 
-   constructor(public note: string, public style: NoteStyle, private draw: any) {
+   constructor(public note: string, public style: NoteStyle, protected draw: any) {
        this.text = draw.text(note);
        // noinspection TypeScriptValidateJSTypes
        this.text.font({anchor: 'middle', leading: '1.0em', size: style.fontSize});

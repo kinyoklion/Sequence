@@ -16,4 +16,9 @@ export default interface Element {
      * Reflow the element adjusting for any modified positions on which this element is dependent.
      */
     reflow();
+
+    /**
+     * Get the right side X position of the element.
+     */
+    getRightX();
 }

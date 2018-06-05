@@ -13,7 +13,7 @@ import ActorStyle from "../styles/actorStyle";
 export default class Actor {
     private readonly rect: any;
     private readonly text: any;
-    private readonly group: any;
+    protected readonly group: any;
     private readonly line: any;
 
     /**
@@ -31,7 +31,7 @@ export default class Actor {
      * @param {ActorStyle} style Style for the actor.
      * @param draw SVG draw instance for rendering the actor.
      */
-    constructor(public name: string, public style: ActorStyle, private draw: any) {
+    constructor(public name: string, public style: ActorStyle, protected draw: any) {
         // noinspection TypeScriptValidateJSTypes
         this.rect = draw.rect(style.width, style.height).attr({fill: style.color}).stroke({width: 3});
         this.text = draw.text(name).attr({x: style.width / 2, y: style.height / 2});

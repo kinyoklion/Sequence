@@ -13,7 +13,7 @@ import Element from 'element';
  * It also allows for the elements to be re-flowed in the case that dependent positions change.
  */
 export default class SequenceElement implements Element {
-    private readonly elements: Element[] = [];
+    private elements: Element[] = [];
 
     /**
      * Construct an instance of the SequenceElement class.
@@ -27,7 +27,9 @@ export default class SequenceElement implements Element {
      * {@inheritDoc}
      */
     reflow() {
-        for(var element of this.elements) {
+        var temp = this.elements;
+        this.elements = [];
+        for(var element of temp) {
             element.reflow();
         }
     }
@@ -55,5 +57,16 @@ export default class SequenceElement implements Element {
     move(y: number) {
         this.y = y;
         this.reflow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    getRightX() {
+        const length = this.elements.length;
+        if(length != 0) {
+            return this.elements[length -1].getRightX();
+        }
+        return 0;
     }
 }
