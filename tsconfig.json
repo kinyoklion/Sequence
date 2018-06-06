@@ -4,7 +4,6 @@
     "target": "es5",
     "sourceMap": true,
     "outFile": "./build/build.js",
-    "types" : ["@types/requirejs"]
   },
   "exclude": [
     "node_modules"

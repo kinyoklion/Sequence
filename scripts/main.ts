@@ -9,17 +9,32 @@ import {Sequence} from 'sequence'
 export function main() {
     const seq= new Sequence("diagram", 2000,1000);
     seq.addActor("First");
-    //seq.addNote("First", "This note will be off screen.");
     seq.addActor("Second");
     seq.addActor("Third");
-    //seq.lockSequence();
+
     seq.addArrow("First", "Second", false,"DoStuffSend()");
     seq.addArrow("Second", "Third", false,"DoStuffSend()");
-    //seq.unlockSequence();
+
+    seq.addArrow("Third", "Second", true,"DoStuffReply()");
     seq.addArrow("Second", "First", true,"DoStuffReply()");
     seq.addArrow("Third", "First", false,"LongWay");
-    seq.addNote("Second", "This is what a note looks like.\nThere can be multiple lines.+++++++++++++++++++++++");
-    seq.addArrow("First", "Third", true,"LongWayBack");
     seq.addNote("Third", "Note on the other edge.");
+    seq.addArrow("First", "Third", true,"LongWayBack");
+    
+    seq.lockSequence();
+    seq.addArrow("First", "Second", false, "LockedSequence()");
+    seq.addArrow("Second", "Third", false, "LockedSequence()");
+    seq.unlockSequence();
+    
+    seq.addNote("Second", "Sequences can be locked to allow for\r\n multiple things happening at the same time.");
+    
+    seq.lockSequence();
+    seq.addArrow("Third", "Second", true, "LockedSequence()");
+    seq.addArrow("Second", "First", true, "LockedSequence()");
+    seq.unlockSequence();
+    
+    //Without this the actors end at the last sequence they are attached to.
+    seq.keepActorsActive(["First", "Second", "Third"]);
+
     seq.reflow();
 }

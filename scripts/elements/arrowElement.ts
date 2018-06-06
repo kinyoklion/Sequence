@@ -49,7 +49,7 @@ export default class ArrowElement extends Arrow implements Element {
     /**
      * {@inheritDoc}
      */
-    getRightX() {
+    getRightX() : number {
         // noinspection BadExpressionStatementJS
         const bbox = this.group.rbox(this.draw);
         return bbox.x + bbox.width;

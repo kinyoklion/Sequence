@@ -46,7 +46,7 @@ export default class NoteElement extends Note implements Element {
     /**
      * {@inheritDoc}
      */
-    getRightX() {
+    getRightX() : number{
         // noinspection BadExpressionStatementJS
         const bbox = this.group.rbox(this.draw);
         console.log("getRightX Note: "+  (bbox.x));
@@ -57,7 +57,7 @@ export default class NoteElement extends Note implements Element {
      * Get the width of the note.
      * @returns {number} The width of the note.
      */
-    getWidth() {
+    getWidth() : number{
         const bbox = this.group.rbox(this.draw);
         return bbox.width;
     }

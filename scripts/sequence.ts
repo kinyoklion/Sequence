@@ -45,6 +45,8 @@ export class Sequence {
 
     private yLast: number = 100;
     private readonly yDelta: number = 50;
+    
+    private largestInLockedSequenceY : number = 0;
 
     /**
      * Construct a new sequence diagram.
@@ -83,10 +85,17 @@ export class Sequence {
         const sequence = new SequenceElement(y);
         this.sequences.push(sequence);
         let arrowStyle = dashed ? this.arrowDashedStyle : this.arrowContinuousStyle;
+        
+        startActor.attach(sequence);
+        endActor.attach(sequence);
+        
         new ArrowElement(sequence, startActor, endActor, arrowStyle, this.draw, label);
 
         if (!this.sequenceLocked) {
             this.yLast = y;
+        }
+        else if(y > this.largestInLockedSequenceY) {
+            this.largestInLockedSequenceY = y;
         }
     }
 
@@ -101,8 +110,28 @@ export class Sequence {
         const sequence = new SequenceElement(y);
         const note = new NoteElement(sequence, anchorActor, text, this.noteStyle, this.draw);
         this.sequences.push(sequence);
+        anchorActor.attach(sequence);
+        
         if(!this.sequenceLocked) {
             this.yLast = y + note.height;
+        }
+        else if((y + note.height) > this.largestInLockedSequenceY) {
+            this.largestInLockedSequenceY = y + note.height;
+        }
+    }
+    
+    keepActorsActive(actors: string[], delta? :number) {
+        let y = 0;
+        if(delta) {
+            y = this.yLast + delta;
+        } 
+        else {
+            y = this.yLast + this.yDelta;
+        }
+        const sequence = new SequenceElement(y);
+        this.sequences.push(sequence);
+        for(var actor of actors) {
+            this.actors[actor].attach(sequence);
         }
     }
 
@@ -120,6 +149,7 @@ export class Sequence {
     unlockSequence() {
         if (this.sequenceLocked) {
             this.sequenceLocked = false;
+            this.yLast = this.largestInLockedSequenceY;
         }
     }
 

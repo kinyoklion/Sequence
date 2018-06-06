@@ -46,7 +46,7 @@ export default class SequenceElement implements Element {
      * Get the y position of this sequence element.
      * @returns {number} The y position of the sequence element.
      */
-    getYPosition() {
+    getYPosition() : number {
         return this.y;
     }
 
@@ -62,7 +62,7 @@ export default class SequenceElement implements Element {
     /**
      * {@inheritDoc}
      */
-    getRightX() {
+    getRightX() : number {
         const length = this.elements.length;
         if(length != 0) {
             return this.elements[length -1].getRightX();

@@ -14,7 +14,7 @@ export default class Actor {
     private readonly rect: any;
     private readonly text: any;
     protected readonly group: any;
-    private readonly line: any;
+    private line: any;
 
     /**
      * Get the center of the actor.
@@ -38,13 +38,26 @@ export default class Actor {
         // noinspection TypeScriptValidateJSTypes
         this.text.font({anchor: 'middle', leading: '0.5em', size: style.fontSize});
         // noinspection TypeScriptValidateJSTypes
-        this.line = draw.line(style.width / 2, style.height, style.width / 2, 500).stroke({
-            width: 3,
-            dasharray: '10,5'
-        });
+        // this.line = draw.line(style.width / 2, style.height, style.width / 2, 500).stroke({
+        //     width: 3,
+        //     dasharray: '10,5'
+        // });
+
         this.group = draw.group();
         this.group.add(this.rect);
         this.group.add(this.text);
+
+        this.updateLine(500);
+    }
+    
+    updateLine(length: number) {
+        if(this.line) {
+            this.line.remove();
+        }
+        this.line = this.draw.line(this.style.width / 2, this.style.height, this.style.width / 2, length).stroke({
+            width: 3,
+            dasharray: '10,5'
+        });
         this.group.add(this.line);
     }
 

@@ -18,6 +18,7 @@ import NoteElement from "./noteElement";
 export default class ActorElement extends Actor implements Element {
 
     private readonly elements: NoteElement[] = [];
+    private readonly attachedSequences: SequenceElement[] = [];
 
     /**
      * Construct an instance of the ActorElement
@@ -47,16 +48,38 @@ export default class ActorElement extends Actor implements Element {
         const rightX = this.sequence.getRightX();
         this.sequence.addElement(this);
         this.move(rightX + this.style.spacing + widest/2, this.sequence.getYPosition());
+        
+        let largestY = 0;
+        for(var sequence of this.attachedSequences) {
+            if(sequence.getYPosition() > largestY) {
+                largestY = sequence.getYPosition();
+            }
+        }
+        let length = largestY - this.sequence.getYPosition();
+        this.updateLine(length);
+        console.log("Actor line length: " + length)
     }
 
+    /**
+     * Add a note element to the actor.
+     * @param {NoteElement} element The note to add to the actor.
+     */
     addElement(element: NoteElement) {
         this.elements.push(element);
+    }
+    
+    /**
+     * Attach a sequence to this actor. The actors activity line must extend to cover the sequence.
+     * @param {SequenceElement} sequence Attach a sequence to the actor. Used to manage the length of the actor line.
+     */
+    attach(sequence: SequenceElement) {
+        this.attachedSequences.push(sequence);
     }
 
     /**
      * {@inheritDoc}
      */
-    getRightX() {
+    getRightX() : number {
         let furthest = 0;
 
         for(var index = 0; index < this.elements.length; index++)

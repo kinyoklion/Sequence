@@ -20,5 +20,5 @@ export default interface Element {
     /**
      * Get the right side X position of the element.
      */
-    getRightX();
+    getRightX() : number;
 }
