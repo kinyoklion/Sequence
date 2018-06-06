@@ -25,11 +25,12 @@ export class Sequence {
     private sequenceLocked: boolean = false;
     private readonly draw: any;
     private readonly actors: StringMap<ActorElement> = {};
-    private actorStyle: ActorStyle = new ActorStyle('#3e84ff',
-        100,
+    private actorStyle: ActorStyle = new ActorStyle('#80aef7',
         75,
-        20,
-        100);
+        30,
+        15,
+        100,
+        1);
 
     private noteStyle: NoteStyle = new NoteStyle("#fff9e6", 10, 1, 12);
     private actorSequence: SequenceElement = new SequenceElement(20);
@@ -43,8 +44,8 @@ export class Sequence {
 
     private readonly sequences: SequenceElement[] = [];
 
-    private yLast: number = 100;
-    private readonly yDelta: number = 50;
+    private yLast: number = 50;
+    private readonly yDelta: number = 25;
     
     private largestInLockedSequenceY : number = 0;
 
@@ -65,8 +66,6 @@ export class Sequence {
      */
     addActor(name: string) {
         const actor = new ActorElement(this.actorSequence, name, this.actorStyle, this.draw);
-        //const offset = Object.keys(this.actors).length * 200 + 10;
-        //actor.move(offset, 20);
         this.actors[name] = actor;
     }
 

@@ -11,7 +11,7 @@ export function main() {
     seq.addActor("First");
     seq.addActor("Second");
     seq.addActor("Third");
-
+    
     seq.addArrow("First", "Second", false,"DoStuffSend()");
     seq.addArrow("Second", "Third", false,"DoStuffSend()");
 

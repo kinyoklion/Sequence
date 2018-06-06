@@ -33,15 +33,10 @@ export default class Actor {
      */
     constructor(public name: string, public style: ActorStyle, protected draw: any) {
         // noinspection TypeScriptValidateJSTypes
-        this.rect = draw.rect(style.width, style.height).attr({fill: style.color}).stroke({width: 3});
+        this.rect = draw.rect(style.width, style.height).attr({fill: style.color}).stroke({width: style.borderWidth});
         this.text = draw.text(name).attr({x: style.width / 2, y: style.height / 2});
         // noinspection TypeScriptValidateJSTypes
         this.text.font({anchor: 'middle', leading: '0.5em', size: style.fontSize});
-        // noinspection TypeScriptValidateJSTypes
-        // this.line = draw.line(style.width / 2, style.height, style.width / 2, 500).stroke({
-        //     width: 3,
-        //     dasharray: '10,5'
-        // });
 
         this.group = draw.group();
         this.group.add(this.rect);
