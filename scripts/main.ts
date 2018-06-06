@@ -14,7 +14,7 @@ export function main() {
     seq.addActor("Third");
     //seq.lockSequence();
     seq.addArrow("First", "Second", false,"DoStuffSend()");
-    //seq.addArrow("Second", "Third", false,"DoStuffSend()");
+    seq.addArrow("Second", "Third", false,"DoStuffSend()");
     //seq.unlockSequence();
     seq.addArrow("Second", "First", true,"DoStuffReply()");
     seq.addArrow("Third", "First", false,"LongWay");

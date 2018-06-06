@@ -54,6 +54,7 @@ export class Sequence {
      */
     constructor(element: string, width: number, height: number) {
         this.draw = SVG(element).size(width, height);
+        this.draw.rect(width, height).attr({ fill: '#FFFFFF' })
     }
 
     /**

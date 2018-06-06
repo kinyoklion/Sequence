@@ -13,6 +13,7 @@ import ArrowStyle from '../styles/arrowStyle';
 export default class Arrow {
     private line: any;
     private text: any;
+    private textBackground: any;
     protected group: any;
 
     /**
@@ -44,7 +45,9 @@ export default class Arrow {
         }
         if(this.text) {
             this.text.remove();
+            this.textBackground.remove();
         }
+        
 
         let mod = startX < endX ? 6 : -6;
         // noinspection TypeScriptValidateJSTypes
@@ -60,18 +63,21 @@ export default class Arrow {
             // noinspection TypeScriptValidateJSTypes
             add.polygon('0,0 0,5 5,2.5');
         });
-
-        this.group.add(this.line);
-
+        
         if(this.label) {
             this.text = this.draw.text(this.label).attr({x:this.line.bbox().cx, y:this.line.bbox().cy - 10});
             // noinspection TypeScriptValidateJSTypes
             this.text.font({anchor: "middle", leading:'0.5em', size:"12"});
             let textBBox = this.text.bbox();
-            let rect = this.draw.rect(textBBox.width, textBBox.height)
+            this.textBackground = this.draw.rect(textBBox.width, textBBox.height)
                 .move(textBBox.x, textBBox.y).fill(this.style.backgroundColor);
-            this.group.add(rect);
+            this.group.add(this.textBackground);
             this.group.add(this.text);
         }
+
+
+        this.group.add(this.line);
+
+
     }
 }
